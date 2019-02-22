@@ -21578,9 +21578,8 @@ TEST_F(VkLayerTest, CreatePipelineTessErrors) {
 TEST_F(VkLayerTest, CreatePipelineAttribBindingConflict) {
     TEST_DESCRIPTION(
         "Test that an error is produced for a vertex attribute setup where multiple bindings provide the same location");
-    m_errorMonitor->SetDesiredFailureMsg(VK_DEBUG_REPORT_ERROR_BIT_EXT,
-                                         "Duplicate vertex input binding descriptions for binding 0");
-
+    // m_errorMonitor->SetDesiredFailureMsg(VK_DEBUG_REPORT_ERROR_BIT_EXT,
+    //                                     "Duplicate vertex input binding descriptions for binding 0");
     ASSERT_NO_FATAL_FAILURE(Init());
     ASSERT_NO_FATAL_FAILURE(InitRenderTarget());
 
@@ -21622,6 +21621,8 @@ TEST_F(VkLayerTest, CreatePipelineAttribBindingConflict) {
     descriptorSet.AppendDummy();
     descriptorSet.CreateVKDescriptorSet(m_commandBuffer);
 
+    m_errorMonitor->SetDesiredFailureMsg(VK_DEBUG_REPORT_ERROR_BIT_EXT,
+                                         "VUID-VkPipelineVertexInputStateCreateInfo-pVertexBindingDescriptions-00616 ");
     pipe.CreateVKPipeline(descriptorSet.GetPipelineLayout(), renderPass());
 
     m_errorMonitor->VerifyFound();
